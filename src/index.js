@@ -28,8 +28,10 @@ function printError(request, apiResponse, city) {
 }
 
 function printElements(apiResponse, city) {
+  console.log(apiResponse);
   document.querySelector("#show-response").innerText = `The humidity in ${city} is ${apiResponse.main.humidity}%.
-  The temperature in Kelvins is ${apiResponse.main.temp} degrees.`;
+  The temperature in Fahrenheit is ${((apiResponse.main.temp - 273.15) * 9/5 + 32).toFixed(2)} degrees.
+  The weather is ${apiResponse.weather[0].description}.`;
 }
 
 function handleFormSubmission(e) {
