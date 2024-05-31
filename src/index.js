@@ -6,24 +6,26 @@ import WeatherService from "./weather-service";
 // business Logic
 
 function getWeather(city) {
-  let promise = WeatherService.getWeather(city);
-  promise.then(function(weatherDataArray) {
-    printElements(weatherDataArray);
-  }, function(errorArray) {
-    printError(errorArray);
-  });
+  WeatherService.getWeather(city)
+    .then(function(response) {
+      if (response.main) {
+        printElements(response, city);
+      } else {
+        printError(response, city);
+      }
+    });
 }
 
 // ui logic
 
-function printError(error) {
-  document.querySelector("#showResponse").innerText = `There was an error accessing the weather data for ${error[2]}: ${error[0].status} ${error[0].statusText}: ${error[1].message}`;
+function printError(error, city) {
+  document.querySelector('#showResponse').innerText = `There was an error accessing the weather data for ${city}: ${error}.`;
 }
 
-function printElements(data) {
-  document.querySelector("#show-response").innerText = `The humidity in ${data[1]} is ${data[0].main.humidity}%.
-  The temperature in Fahrenheit is ${((data[0].main.temp - 273.15) * 9/5 + 32).toFixed(2)} degrees.
-  The weather is ${data[0].weather[0].description}.`;
+function printElements(response, city) {
+  document.querySelector('#show-response').innerText = `The humidity in ${city} is ${response.main.humidity}%.
+  The temperature in Fahrenheit is ${((response.main.temp - 273.15) * 9/5 + 32).toFixed(2)} degrees.
+  The weather is ${response.weather[0].description}.`;
 }
 
 function handleFormSubmission(e) {
